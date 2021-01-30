@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "./App.module.scss";
 import { BrowserRouter as Router, Link, Route, Switch } from "react-router-dom";
+import {bond, stock} from "./consts";
 
 function App() {
   return (
@@ -15,7 +16,9 @@ function App() {
             <li>
               <Link to="/stocks">Stocks</Link>
             </li>
-            <li>Bonds</li>
+            <li>
+              <Link to="/bonds">Bonds</Link>
+            </li>
             <li>Options</li>
             <li>Futures</li>
             <li>Swap</li>
@@ -28,7 +31,10 @@ function App() {
         </nav>
         <Switch>
           <Route path="/stocks">
-            <Stocks />
+            <Screen header="Stocks" definition={stock.definition} />
+          </Route>
+          <Route path="/bonds">
+            <Screen header="Bonds" definition={bond.definition} />
           </Route>
           <Route path="/">
             <Home />
@@ -43,7 +49,13 @@ function Home() {
   return <h2>Home</h2>;
 }
 
-function Card({ header, definition }: { header: string; definition: string }) {
+function Screen({
+  header,
+  definition,
+}: {
+  header: string;
+  definition: string;
+}) {
   return (
     <div>
       <header>{header}</header>
@@ -53,12 +65,6 @@ function Card({ header, definition }: { header: string; definition: string }) {
       <footer />
     </div>
   );
-}
-
-function Stocks() {
-  const definition =
-    "Companies issue stocks as a security to represent a share in the company. These stocks (or `shares`) can be issued internally within the company's founders and employees or via an IPO - enabling the publicto buy a stake in the company.By selling stock to the public, the company in effect raises capital in return for shares.";
-  return <Card header="Stocks" definition={definition} />;
 }
 
 export default App;
