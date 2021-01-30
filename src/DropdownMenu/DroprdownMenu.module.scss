@@ -1,0 +1,6 @@
+.dropdown_box {
+  opacity: 0;
+  &.open {
+    opacity: 1;
+  }
+}
