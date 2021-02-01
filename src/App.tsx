@@ -1,41 +1,35 @@
 import React from "react";
 import styles from "./App.module.scss";
-import { BrowserRouter as Router, Link, Route, Switch } from "react-router-dom";
-import {bond, stock} from "./consts";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { financialAssets } from "./consts";
+import { NavBar } from "./NavBar/NavBar";
+import { DropdownMenu } from "./Dropdown/DropdownMenu";
+import { DropdownListItem } from "./Dropdown/DropdownListItem";
 
 function App() {
+  const assetDropdownOptions = financialAssets.map((asset) => ({
+    id: asset.id,
+    value: (
+      <DropdownListItem title={asset.title} navigateLink={`/${asset.id}`} />
+    ),
+  }));
+
   return (
     <Router>
       <div className={styles.App}>
-        <header>some header</header>
-        <nav>
-          <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/stocks">Stocks</Link>
-            </li>
-            <li>
-              <Link to="/bonds">Bonds</Link>
-            </li>
-            <li>Options</li>
-            <li>Futures</li>
-            <li>Swap</li>
-            <li>Forex</li>
-            <li>Mutual funds</li>
-            <li>ETFs</li>
-            <li>Hedge Funds</li>
-            <li>Fund Accounting</li>
-          </ul>
-        </nav>
+        <NavBar>
+          <DropdownMenu options={assetDropdownOptions} title={"assets"} />
+          <DropdownMenu options={assetDropdownOptions} title={"terms"} />
+          <div>portfolio</div>
+          <div>trade</div>
+          <div>user</div>
+        </NavBar>
         <Switch>
-          <Route path="/stocks">
-            <Screen header="Stocks" definition={stock.definition} />
-          </Route>
-          <Route path="/bonds">
-            <Screen header="Bonds" definition={bond.definition} />
-          </Route>
+          {financialAssets.map((asset) => (
+            <Route path={`/${asset.id}`}>
+              <Screen header={asset.title} definition={asset.definition} />
+            </Route>
+          ))}
           <Route path="/">
             <Home />
           </Route>
