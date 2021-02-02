@@ -1,5 +1,7 @@
+import { contramap, Eq, eqString } from "fp-ts/Eq";
+
 const stock = {
-  id: "stock",
+  id: "stock" as const,
   title: "Stocks",
   definition:
     "Companies issue stocks as a security to represent a share in the company. " +
@@ -9,7 +11,7 @@ const stock = {
 };
 
 const bond = {
-  id: "bond",
+  id: "bond" as const,
   title: "Bonds",
   definition:
     "A company (or any other financial institution" +
@@ -19,7 +21,7 @@ const bond = {
 };
 
 const finOption = {
-  id: "option",
+  id: "option" as const,
   title: "Options",
   definition:
     "A company (or any other financial institution" +
@@ -29,7 +31,7 @@ const finOption = {
 };
 
 const etf = {
-  id: "etf",
+  id: "etf" as const,
   title: "ETFs",
   definition:
     "A company (or any other financial institution" +
@@ -39,7 +41,7 @@ const etf = {
 };
 
 const futures = {
-  id: "future",
+  id: "future" as const,
   title: "Futures",
   definition:
     "A company (or any other financial institution" +
@@ -49,3 +51,11 @@ const futures = {
 };
 
 export const financialAssets = [stock, bond, etf, finOption, futures];
+type FinancialAssets = typeof financialAssets[number];
+const eqAsset = contramap((asset: FinancialAssets) => asset.id)(eqString);
+function filterAsset<A>(E: Eq<A>): (arr: A[], asset: A) => A[] {
+  return (arr, asset) =>
+    arr.filter((item) => E.equals(item, asset));
+}
+
+export const res = filterAsset(eqAsset)(financialAssets, stock);

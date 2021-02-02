@@ -1,12 +1,13 @@
 import React from "react";
 import styles from "./App.module.scss";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { financialAssets } from "./consts";
+import { financialAssets, res } from "./consts";
 import { NavBar } from "./NavBar/NavBar";
 import { DropdownMenu } from "./Dropdown/DropdownMenu";
 import { DropdownListItem } from "./Dropdown/DropdownListItem";
 
 function App() {
+  console.log({ res });
   const assetDropdownOptions = financialAssets.map((asset) => ({
     id: asset.id,
     value: (
